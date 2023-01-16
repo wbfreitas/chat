@@ -1,7 +1,5 @@
 FROM openjdk:17-jdk-slim-buster
 
-WORKDIR /app
-
-COPY target/*.jar app/app.jar
-
-ENTRYPOINT java -jar app.jar
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
