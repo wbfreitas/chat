@@ -1,0 +1,6 @@
+uild:
+  docker:
+    release:
+       dockerfile: Dockerfile
+       target: builder
+    web: Dockerfile
