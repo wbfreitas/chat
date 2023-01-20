@@ -1,13 +1,12 @@
 package br.com.fiap.enginnering.chat.documents;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class ChatItem {
 
     @Field(name = "talker_id")
     @JsonAlias(value = "talker_id")
-    @NotNull(message = "Campo talker_id obrigatorio")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String talkerID;
 
     @Field(name = "receiver_id")
