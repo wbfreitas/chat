@@ -1,42 +1,11 @@
-#### Stage 1: Build the application
-FROM openjdk:11 as build
+FROM eclipse-temurin:17-jdk-focal
 
-# Set the current working directory inside the image
 WORKDIR /app
-# Copy maven executable to the image
-COPY mvnw .
-COPY .mvn .mvn
 
-# Copy the pom.xml file
-COPY pom.xml .
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
-# Build all the dependencies in preparation to go offline.
-# This is a separate step so the dependencies will be cached unless
-# the pom.xml file has changed.
-RUN ./mvnw dependency:go-offline -B
+COPY src ./src
 
-# Copy the project source
-COPY src src
-
-# Package the application
-RUN ./mvnw package -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
-
-#### Stage 2: A minimal docker image with command to run the app
-
-# ARG DEPENDENCY=/app/target/dependency
-
-# # Copy project dependencies from the build stage
- COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
- COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
- COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-
-#ENTRYPOINT ["java","-cp","app:app/lib/*","com.shapeshop.App"]
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-
-ENTRYPOINT ["java","-jar","/app.jar"]
-#
-## Expose port 80 to the Docker host, so we can access it
-## from the outside.
-#EXPOSE 8080
+CMD ["./mvnw", "spring-boot:run"]
