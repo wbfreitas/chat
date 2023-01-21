@@ -29,17 +29,21 @@ public class ChatController {
         return service.save(chat, token);
     }
 
-
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable  String id) {
+       this.service.delete(id);
+       return "OK";
+    }
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<List<PersonModel>>chats(@RequestHeader (name="Authorization") String token) {
-        return Flux.interval(Duration.ofSeconds(5)).map(
+        return Flux.interval(Duration.ofSeconds(3)).map(
                 __-> service.getChats(token)
         );
     }
 
     @GetMapping(value = "/mensagens-parceiros/{idParceiro}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<List<ChatItem>> mensageByPersonId(@PathVariable String idParceiro, @RequestHeader (name="Authorization") String token) {
-        return Flux.interval(Duration.ofSeconds(5)).map(
+        return Flux.interval(Duration.ofSeconds(2)).map(
                 __-> service.getMessages(idParceiro, token)
         );
     }

@@ -6,9 +6,7 @@ import br.com.fiap.enginnering.chat.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,15 +25,20 @@ public class ChatService {
         PersonModel person = clientGateway.getSessionId(token).get();
         List<String> personID = repository
                 .findConversationIDs(person.getId())
-                .stream().map(c -> c.replace("/", "")
+                .stream()
+                .map(c -> c.replace("/", "")
                         .replace(person.getId(), "")).collect(Collectors.toList());
 
-        Optional<List<PersonModel>> personsByID = clientGateway.getPersonsByID(personID, token);
-        return  personsByID.get();
+        return clientGateway.getPersonsByID(personID, token).get();
+
     }
 
     public List<ChatItem> getMessages(String idParceiro, String token) {
         PersonModel person = clientGateway.getSessionId(token).get();
        return repository.findMessagesByConversationID(ChatItem.generateConversationID(idParceiro, person.getId()));
+    }
+
+    public void delete(String id) {
+        this.repository.deleteById(id);
     }
 }

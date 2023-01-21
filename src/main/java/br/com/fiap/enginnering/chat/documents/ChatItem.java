@@ -16,7 +16,6 @@ public class ChatItem {
 
    @Id
     private String id;
-
     @NotNull(message = "Campo message obrigatorio")
     private String message;
 
@@ -78,5 +77,9 @@ public class ChatItem {
 
     public void setTalkerID(String talkerID) {
         this.talkerID = talkerID;
+    }
+
+    public String getId() {
+        return id;
     }
 }
