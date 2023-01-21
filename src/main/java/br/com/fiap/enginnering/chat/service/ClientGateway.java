@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(name = "client-service", url = "localhost:8081/clientes/api/v1/")
+@FeignClient(name = "client-service", url = "http://localhost:8081/clientes/api/v1/")
 public interface ClientGateway {
     @RequestMapping(method = RequestMethod.GET)
     Optional<PersonModel> getSessionId(@RequestHeader("Authorization") String token);
