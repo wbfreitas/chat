@@ -8,4 +8,6 @@ RUN ./mvnw dependency:go-offline
 
 COPY src ./src
 
+ENV MONGOUSER=${MONGOUSER} MONGOPWD=${MONGOPWD} SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+
 CMD ["./mvnw", "spring-boot:run"]
